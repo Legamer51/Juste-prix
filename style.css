@@ -1,0 +1,447 @@
+
+/* =================================== */
+/* 🌟 VARIABLES ET RESET GÉNÉRAL       */
+/* =================================== */
+:root {
+    --bg: #f7f9ff;
+    --surface: #ffffff;
+    --surface-soft: #eef3ff;
+    --primary: #006cff;
+    --primary-soft: rgba(0, 108, 255, 0.16);
+    --text: #162031;
+    --muted: #5d6f86;
+    --border: rgba(16, 60, 170, 0.12);
+    --shadow: 0 24px 70px rgba(15, 34, 82, 0.08);
+    --radius: 28px;
+    --max-width: 1200px;
+}
+
+body.dark {
+    --bg: #090d14;
+    --surface: #111924;
+    --surface-soft: #171f2d;
+    --primary: #58a6ff;
+    --primary-soft: rgba(88, 166, 255, 0.18);
+    --text: #edf2ff;
+    --muted: #9fb1d0;
+    --border: rgba(255, 255, 255, 0.08);
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #121826;
+        --surface: #171f2d;
+        --surface-soft: #1e2740;
+        --primary: #58a6ff;
+        --text: #f3f7ff;
+        --muted: #9fb1d0;
+        --border: rgba(255, 255, 255, 0.08);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background: radial-gradient(circle at top left, rgba(0, 108, 255, 0.12), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(0, 108, 255, 0.08), transparent 20%),
+                var(--bg);
+    color: var(--text);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+img,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+.container {
+    width: min(100% - 2rem, var(--max-width));
+    margin: 0 auto;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =================================== */
+/* 🚀 HEADER (Hero)                  */
+/* =================================== */
+.hero {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 5.5rem 1.5rem 4.5rem;
+    background: linear-gradient(180deg, rgba(0, 108, 255, 0.95), rgba(21, 80, 255, 0.88));
+    color: #ffffff;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.1), transparent 18%);
+    pointer-events: none;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
+}
+h1 {
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    max-width: 840px;
+    margin: 0 auto 1rem;
+    line-height: 1.05;
+}
+
+.hero p {
+    max-width: 720px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1.05rem;
+}
+
+.hero-actions {
+    margin-top: 2.5rem;
+    display: inline-flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn,
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.6rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+    transform: translateY(-2px);
+}
+
+.btn {
+    background: #ffffff;
+    color: #0d2141;
+    box-shadow: 0 18px 35px rgba(15, 34, 82, 0.12);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #0052cc;
+}
+
+/* =================================== */
+/* 🌟 MAIN & SECTIONS                 */
+/* =================================== */
+section {
+    padding: 5.5rem 0;
+}
+
+section h2 {
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+section p {
+    color: var(--muted);
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+#features {
+    padding-top: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.75rem;
+    margin-top: 2.5rem;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 108, 255, 0.18);
+    box-shadow: 0 28px 58px rgba(15, 34, 82, 0.12);
+}
+
+.card h3 {
+    margin-bottom: 0.85rem;
+    font-size: 1.3rem;
+}
+
+.card p {
+    color: var(--muted);
+}
+
+.game-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.game-instructions {
+    color: var(--muted);
+    font-size: 0.98rem;
+}
+
+.game-status {
+    padding: 1rem 1.25rem;
+    border-radius: 18px;
+    background: var(--surface-soft);
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-weight: 600;
+}
+
+.game-status[data-status='success'] {
+    color: #107c3a;
+    background: rgba(16, 124, 58, 0.08);
+    border-color: rgba(16, 124, 58, 0.16);
+}
+
+.game-status[data-status='error'] {
+    color: #b12726;
+    background: rgba(177, 39, 38, 0.08);
+    border-color: rgba(177, 39, 38, 0.16);
+}
+
+.game-status[data-status='hint'] {
+    color: #164a9f;
+    background: rgba(0, 108, 255, 0.08);
+    border-color: rgba(0, 108, 255, 0.16);
+}
+
+.game-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+#contact {
+    background: transparent;
+}
+
+.contact-card {
+    max-width: 860px;
+    margin: 2rem auto 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.25rem;
+    box-shadow: var(--shadow);
+}
+
+.form-flex {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-flex > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+label {
+    font-weight: 600;
+    color: var(--text);
+}
+
+input {
+    width: 100%;
+    padding: 1rem 1.05rem;
+    border-radius: 16px;
+    border: 1px solid rgba(15, 34, 82, 0.12);
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.dark input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: var(--text);
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(0, 108, 255, 0.12);
+}
+
+.form-actions {
+    grid-column: span 2;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    min-width: 180px;
+}
+
+.footer-wrapper,
+footer {
+    padding: 2rem 0;
+}
+
+footer {
+    border-top: 1px solid rgba(15, 34, 82, 0.08);
+    text-align: center;
+    color: var(--muted);
+}
+
+/* =================================== */
+/* 📱 MEDIA QUERIES (RESPONSIVITÉ)   */
+/* =================================== */
+@media (max-width: 860px) {
+    .hero {
+        padding: 4.5rem 1.5rem 3.5rem;
+    }
+
+    .form-flex {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        justify-content: stretch;
+    }
+
+    .form-actions .btn-primary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 620px) {
+    .hero h1 {
+        font-size: 2.4rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    section {
+        padding: 3.5rem 0;
+    }
+}
+```
+
+### 📜 3. JavaScript (`script.js`)
+
+Le JavaScript est responsable de l'interactivité et du **mode sombre**, utilisant la manipulation du DOM pour appliquer les
+styles sans recharger la page (ce qui est critique pour l'expérience utilisateur moderne).
+
+```javascript
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Sélectionner les éléments clés du DOM
+    const body = document.body;
+    const toggleButton = document.getElementById('mode-toggle');
+
+    /**
+     * Fonction principale de basculement du mode sombre/clair.
+     * Elle gère la classe 'dark' sur le body pour que le CSS prenne le relais.
+     */
+    function toggleDarkMode() {
+        // Vérifie si le body a déjà la classe 'dark', si oui, on l'enlève. Sinon, on l'ajoute.
+        if (body.classList.contains('dark')) {
+            body.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            toggleButton.textContent = '🌙 Mode Sombre';
+        } else {
+            body.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            toggleButton.textContent = '💡 Mode Sombre';
+        }
+    }
+
+    // --- Initialisation du Thème (Persistance) ---
+    /**
+     * Vérifie si le thème est stocké dans localStorage ou préféré par l'utilisateur
+     * Ceci assure que si je ferme la page et que je reviens, elle garde son mode.
+     */
+    function initializeTheme() {
+        // 1. Priorité au stockage local (localStorage)
+        const savedTheme = localStorage.getItem('theme');
+
+        if (savedTheme) {
+            if (savedTheme === 'dark') {
+                body.classList.add('dark');
+                toggleButton.textContent = '☀️ Mode Clair';
+            } else {
+                body.classList.remove('dark');
+                toggleButton.textContent = '🌙 Mode Sombre';
+            }
+        }
+        // 2. Sinon, utiliser la préférence du système d'exploitation (media query)
+        else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+             body.classList.add('dark');
+             toggleButton.textContent = '☀️ Mode Clair';
+        } else {
+            // Par défaut : mode clair et bouton initialisé pour le premier clic
+            toggleButton.textContent = '🌙 Mode Sombre';
+        }
+    }
+
+    // 3. Ajout de l'écouteur d'événement (Event Listener)
+    if (toggleButton) {
+        toggleButton.addEventListener('click', toggleDarkMode);
+    }
+
+    // Exécuter la fonction d'initialisation au chargement de la page
+    initializeTheme();
+});
