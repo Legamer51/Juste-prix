@@ -18,21 +18,28 @@
     <main class="container">
         <section id="game">
             <div class="contact-card game-card">
-                <p class="game-instructions">Entre un nombre, puis valide pour savoir si c'est trop bas, trop haut ou juste.</p>
-                <form id="guess-form" class="form-flex">
-                    <div>
-                        <label for="guess">Ton estimation :</label>
-                        <input type="number" id="guess" name="guess" min="1" max="100" required placeholder="1 - 100">
+                <div class="game-panel">
+                    <p class="game-instructions">Entre un nombre, puis valide pour savoir si c'est trop bas, trop haut ou juste.</p>
+                    <form id="guess-form" class="form-flex">
+                        <div>
+                            <label for="guess">Ton estimation :</label>
+                            <input type="number" id="guess" name="guess" min="1" max="100" required placeholder="1 - 100">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Valider</button>
+                        </div>
+                    </form>
+                    <div class="game-status" id="game-message">Prêt ? Fais ta première proposition.</div>
+                    <div class="game-meta">
+                        <span id="attempts-count">Essais : 0</span>
+                        <button type="button" id="reset-button" class="btn-secondary">Nouvelle partie</button>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Valider</button>
-                    </div>
-                </form>
-                <div class="game-status" id="game-message">Prêt ? Fais ta première proposition.</div>
-                <div class="game-meta">
-                    <span id="attempts-count">Essais : 0</span>
-                    <button type="button" id="reset-button" class="btn-secondary">Nouvelle partie</button>
                 </div>
+                <aside class="guess-history" aria-labelledby="guess-history-title">
+                    <h2 id="guess-history-title">Numéros déjà essayés</h2>
+                    <p id="guess-history-empty">Aucun essai encore.</p>
+                    <ul id="guess-history-list" class="guess-history-list" aria-live="polite"></ul>
+                </aside>
             </div>
         </section>
     </main>

@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let attempts = 0;
         let remaining = (LIMIT_ATTEMPTS === Infinity) ? Infinity : LIMIT_ATTEMPTS;
         let isGameOver = false;
+        const guessHistoryList = document.getElementById('guess-history-list');
+        const guessHistoryEmpty = document.getElementById('guess-history-empty');
+        const guesses = [];
 
         function getRandomNumber(max = 100) {
             return Math.floor(Math.random() * max) + 1;
@@ -80,6 +83,24 @@ document.addEventListener('DOMContentLoaded', () => {
             messageEl.dataset.status = status;
         }
 
+        function renderGuessHistory() {
+            if (!guessHistoryList || !guessHistoryEmpty) return;
+            guessHistoryList.innerHTML = '';
+
+            if (guesses.length === 0) {
+                guessHistoryEmpty.style.display = 'block';
+                return;
+            }
+
+            guessHistoryEmpty.style.display = 'none';
+
+            guesses.forEach((guess, index) => {
+                const item = document.createElement('li');
+                item.textContent = `${index + 1}. ${guess}`;
+                guessHistoryList.appendChild(item);
+            });
+        }
+
         function endGameLost() {
             setMessage(`Partie terminée. Le juste prix était ${secretNumber}.`, 'error');
             isGameOver = true;
@@ -91,10 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
             attempts = 0;
             remaining = (LIMIT_ATTEMPTS === Infinity) ? Infinity : LIMIT_ATTEMPTS;
             isGameOver = false;
+            guesses.length = 0;
             guessInput.disabled = false;
             guessInput.value = '';
             guessInput.focus();
             updateAttempts();
+            renderGuessHistory();
             setMessage(`Prêt ? Devine un nombre entre 1 et ${maxValue}.`, 'info');
         }
 
@@ -114,6 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (LIMIT_ATTEMPTS !== Infinity) {
                 remaining -= 1;
             }
+            guesses.push(guessValue);
+            renderGuessHistory();
             updateAttempts();
             guessInput.value = '';
 
