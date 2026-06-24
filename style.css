@@ -258,6 +258,10 @@ section p {
     color: var(--muted);
 }
 
+.clickable-card {
+    cursor: pointer;
+}
+
 .game-card {
     display: flex;
     flex-direction: column;

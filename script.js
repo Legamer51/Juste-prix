@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Cartes cliquables
+    const clickableCards = document.querySelectorAll('.clickable-card');
+    clickableCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Ne pas naviguer si on clique sur un lien (pour permettre la navigation normale)
+            if (e.target.tagName === 'A') {
+                return;
+            }
+            const link = card.getAttribute('data-link');
+            if (link) {
+                window.location.href = link;
+            }
+        });
+    });
+
     // Bouton de retour
     const backBtn = document.getElementById('back-btn');
     if (backBtn) {
@@ -100,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 remaining -= 1;
             }
             updateAttempts();
+            guessInput.value = '';
 
             if (guessValue < secretNumber) {
                 setMessage('Trop bas ! Essaie plus haut.', 'hint');

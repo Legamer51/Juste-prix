@@ -13,53 +13,36 @@
 
     <main class="container">
         <section id="features">
-            <h1>Jeu du Juste Prix</h1>
+            <h1>Bienvenue dans le jeu du Juste Prix</h1>
 
             <div class="grid-container">
-                <article class="card">
+                <article class="card clickable-card" data-link="page/facile.html">
                     <h3>Facile</h3>
-                    <a href="page/facile.html">Voir la page</a>
-                    <p>J'utilise des balises comme <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code> et <code>&lt;footer&gt;</code> pour une navigation propre.</p>
+                    <p>Trouvez le bon nombre entre 1 et 100 choisi aléatoirement.
+                        <p></p>Vous avez essais illimités pour trouver le bon nombre. Bonne chance !<p></p>
+                    </p>
                 </article>
-                <article class="card">
+                <article class="card clickable-card" data-link="page/moyen.html">
                     <h3>Moyen</h3>
-                    <a href="page/moyen.html" class="btn btn-primary">Voir la page</a>
-                    <p>La mise en page s'ajuste automatiquement pour les écrans de bureau, tablette et smartphone.</p>
+                    <p>Trouvez le bon nombre entre 1 et 100 choisi aléatoirement.
+                        <p></p>Vous avez 10 essais pour trouver le bon nombre. Bonne chance !<p></p>
+                    </p>
                 </article>
-                <article class="card">
+                <article class="card clickable-card" data-link="page/difficile.html">
                     <h3>Extrême</h3>
-                    <a href="page/difficile.html" class="btn btn-primary">Voir la page</a>
-                    <p>Un mode sombre activable, des transitions fluides et des cartes animées au survol.</p>
+                    <p>Trouvez le bon nombre entre 1 et 1000 choisi aléatoirement.<p></p>
+                       <p></p> Ce niveau est fait pour les joueurs expérimentés.<p></p>
+                        Vous avez 10 essais pour trouver le bon nombre. Bonne chance !
+                    </p>
                 </article>
             </div>
         </section>
 
-        <section id="game">
-            <h2>Jeu du Juste Prix</h2>
-            <p>Devine le prix secret entre 1 et 100. Chaque essai te rapproche de la victoire.</p>
-            <div class="contact-card game-card">
-                <p class="game-instructions">Entre un nombre, puis valide pour savoir si c'est trop bas, trop haut ou juste.</p>
-                <form id="guess-form" class="form-flex">
-                    <div>
-                        <label for="guess">Ton estimation :</label>
-                        <input type="number" id="guess" name="guess" min="1" max="100" required placeholder="1 - 100">
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Valider</button>
-                    </div>
-                </form>
-                <div class="game-status" id="game-message">Prêt ? Fais ta première proposition.</div>
-                <div class="game-meta">
-                    <span id="attempts-count">Essais : 0</span>
-                    <button type="button" id="reset-button" class="btn-secondary">Nouvelle partie</button>
-                </div>
-            </div>
-        </section>
-
+        
         <section id="contact">
-            <h2>Inscrivez-vous</h2>
+            <h2>Pour avoir plus d'exclusivité inscrivez-vous</h2>
             <div class="contact-card">
-                <p>Envoyez un message rapide. Je réponds rapidement et avec plaisir.</p>
+                <p>Vous recevrez des mises à jour exclusives et des offres spéciales.</p>
                 <form action="#" method="POST" class="form-flex">
                     <div>
                         <label for="nom">Nom :</label>
@@ -70,7 +53,7 @@
                         <input type="email" id="email" name="email" required placeholder="votre@email.com">
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Envoyer le message</button>
+                        <button type="submit" class="btn btn-primary">S'inscrire</button>
                     </div>
                 </form>
             </div>
