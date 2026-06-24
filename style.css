@@ -477,6 +477,29 @@ footer {
         padding: 4.5rem 1.5rem 3.5rem;
     }
 
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .contact-card,
+    .guess-history {
+        width: 100%;
+        box-shadow: none;
+    }
+
+    .game-card {
+        grid-template-columns: 1fr;
+    }
+
+    .guess-history {
+        min-height: auto;
+    }
+
+    .guess-history-list li {
+        padding: 0.95rem 1rem;
+    }
+
     .form-flex {
         grid-template-columns: 1fr;
     }
@@ -491,16 +514,38 @@ footer {
 }
 
 @media (max-width: 620px) {
+    .hero {
+        padding: 3.5rem 1.25rem 2.5rem;
+    }
+
     .hero h1 {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
     }
 
     .hero p {
-        font-size: 1rem;
+        font-size: 0.98rem;
+    }
+
+    .back-button {
+        top: 1rem;
+        left: 0.75rem;
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    .game-status,
+    .game-meta,
+    .guess-history {
+        width: 100%;
+    }
+
+    .guess-history-list li {
+        font-size: 0.95rem;
     }
 
     section {
-        padding: 3.5rem 0;
+        padding: 3rem 0;
     }
 }
+
 

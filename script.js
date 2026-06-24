@@ -94,10 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             guessHistoryEmpty.style.display = 'none';
 
-            guesses.forEach((guess, index) => {
+            guesses.forEach((guess) => {
                 const item = document.createElement('li');
                 item.className = `guess-history-item guess-history-item--${guess.status}`;
-                item.textContent = `${index + 1}. ${guess.value}`;
+                item.textContent = guess.value;
                 guessHistoryList.appendChild(item);
             });
         }
