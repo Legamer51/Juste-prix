@@ -406,6 +406,12 @@ input:focus {
     box-shadow: 0 0 0 4px rgba(0, 108, 255, 0.12);
 }
 
+.input-error {
+    border-color: #d92f2f;
+    box-shadow: 0 0 0 4px rgba(217, 47, 47, 0.14);
+    background: rgba(217, 47, 47, 0.05);
+}
+
 .form-actions {
     grid-column: span 2;
     display: flex;

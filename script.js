@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             guesses.length = 0;
             guessInput.disabled = false;
             guessInput.value = '';
+            guessInput.classList.remove('input-error');
             guessInput.focus();
             updateAttempts();
             renderGuessHistory();
@@ -144,10 +145,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (guessValue < secretNumber) {
                 setMessage('Trop bas ! Essaie plus haut.', 'hint');
+                guessInput.classList.add('input-error');
             } else if (guessValue > secretNumber) {
                 setMessage('Trop haut ! Essaie plus bas.', 'hint');
+                guessInput.classList.add('input-error');
             } else {
                 setMessage(`Bravo ! Le juste prix était ${secretNumber}.`, 'success');
+                guessInput.classList.remove('input-error');
                 isGameOver = true;
                 guessInput.disabled = true;
                 return;
