@@ -305,12 +305,41 @@ section p {
 }
 
 .guess-history-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 0.85rem 1rem;
     color: var(--text);
     font-weight: 600;
+}
+
+.guess-history-item::before {
+    content: '';
+    width: 1.4rem;
+    height: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    font-size: 1rem;
+}
+
+.guess-history-item--low::before {
+    content: '↑';
+    color: #107c3a;
+}
+
+.guess-history-item--high::before {
+    content: '↓';
+    color: #d92f2f;
+}
+
+.guess-history-item--correct::before {
+    content: '✓';
+    color: #107c3a;
 }
 
 .game-instructions {

@@ -96,7 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             guesses.forEach((guess, index) => {
                 const item = document.createElement('li');
-                item.textContent = `${index + 1}. ${guess}`;
+                item.className = `guess-history-item guess-history-item--${guess.status}`;
+                item.textContent = `${index + 1}. ${guess.value}`;
                 guessHistoryList.appendChild(item);
             });
         }
@@ -150,16 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (LIMIT_ATTEMPTS !== Infinity) {
                 remaining -= 1;
             }
-            guesses.push(guessValue);
+
+            const guessStatus = guessValue < secretNumber ? 'low' : (guessValue > secretNumber ? 'high' : 'correct');
+            guesses.push({ value: guessValue, status: guessStatus });
             renderGuessHistory();
             updateAttempts();
             guessInput.value = '';
 
-            if (guessValue < secretNumber) {
+            if (guessStatus === 'low') {
                 setMessage('Trop bas ! Essaie plus haut.', 'hint');
                 guessForm.classList.add('input-error');
                 guessInput.classList.add('input-error');
-            } else if (guessValue > secretNumber) {
+            } else if (guessStatus === 'high') {
                 setMessage('Trop haut ! Essaie plus bas.', 'hint');
                 guessForm.classList.add('input-error');
                 guessInput.classList.add('input-error');
