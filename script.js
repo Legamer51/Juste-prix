@@ -18,7 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById('back-btn');
     if (backBtn) {
         backBtn.addEventListener('click', () => {
-            history.back();
+            // Si l'utilisateur a un historique de navigation, revenir en arrière.
+            // Sinon, renvoyer vers l'accueil (chemin relatif depuis les pages).
+            if (document.referrer && document.referrer !== '') {
+                history.back();
+            } else {
+                const goto = (location.pathname.includes('/page/')) ? '../index.html' : 'index.html';
+                window.location.href = goto;
+            }
         });
     }
 
