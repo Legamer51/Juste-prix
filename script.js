@@ -101,6 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        function clearErrorState() {
+            guessForm.classList.remove('input-error');
+            guessInput.classList.remove('input-error');
+        }
+
         function endGameLost() {
             setMessage(`Partie terminée. Le juste prix était ${secretNumber}.`, 'error');
             isGameOver = true;
@@ -115,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             guesses.length = 0;
             guessInput.disabled = false;
             guessInput.value = '';
-            guessInput.classList.remove('input-error');
+            clearErrorState();
             guessInput.focus();
             updateAttempts();
             renderGuessHistory();
@@ -124,6 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         resetButton.addEventListener('click', resetGame);
 
+        guessInput.addEventListener('input', () => {
+            if (guessInput.value.trim().length > 0) {
+                clearErrorState();
+            }
+        });
+
         guessForm.addEventListener('submit', event => {
             event.preventDefault();
             if (isGameOver) return;
@@ -131,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const guessValue = Number(guessInput.value);
             if (!guessValue || guessValue < 1 || guessValue > maxValue) {
                 setMessage(`Choisis un nombre entre 1 et ${maxValue}.`, 'error');
+                guessForm.classList.add('input-error');
                 return;
             }
 
@@ -145,13 +157,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (guessValue < secretNumber) {
                 setMessage('Trop bas ! Essaie plus haut.', 'hint');
+                guessForm.classList.add('input-error');
                 guessInput.classList.add('input-error');
             } else if (guessValue > secretNumber) {
                 setMessage('Trop haut ! Essaie plus bas.', 'hint');
+                guessForm.classList.add('input-error');
                 guessInput.classList.add('input-error');
             } else {
                 setMessage(`Bravo ! Le juste prix était ${secretNumber}.`, 'success');
-                guessInput.classList.remove('input-error');
+                clearErrorState();
                 isGameOver = true;
                 guessInput.disabled = true;
                 return;

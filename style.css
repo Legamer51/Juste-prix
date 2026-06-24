@@ -412,6 +412,13 @@ input:focus {
     background: rgba(217, 47, 47, 0.05);
 }
 
+#guess-form.input-error {
+    border: 1px solid #d92f2f;
+    background: rgba(217, 47, 47, 0.05);
+    padding: 1.5rem;
+    border-radius: 24px;
+}
+
 .form-actions {
     grid-column: span 2;
     display: flex;
