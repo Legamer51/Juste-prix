@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Bouton de retour
+    const backBtn = document.getElementById('back-btn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            history.back();
+        });
+    }
+
     const body = document.body;
     const toggleButton = document.getElementById('mode-toggle');
     const guessForm = document.getElementById('guess-form');
