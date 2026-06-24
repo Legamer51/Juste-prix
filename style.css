@@ -255,7 +255,7 @@ section p {
 }
 
 .card p {
-    color: var(--muted);
+    color: var(--text);
 }
 
 .clickable-card {
