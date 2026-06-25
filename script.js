@@ -109,6 +109,29 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        function showSixSevenAlert() {
+            const existingAlert = document.getElementById('six-seven-alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            const alertBox = document.createElement('div');
+            alertBox.id = 'six-seven-alert';
+            alertBox.className = 'six-seven-alert';
+            alertBox.innerHTML = '<span>SIX SEVENNN</span>';
+            document.body.appendChild(alertBox);
+
+            window.setTimeout(() => {
+                alertBox.classList.add('six-seven-alert--hidden');
+            }, 5000);
+
+            window.setTimeout(() => {
+                if (alertBox.parentNode) {
+                    alertBox.parentNode.removeChild(alertBox);
+                }
+            }, 5500);
+        }
+
         function clearErrorState() {
             guessForm.classList.remove('input-error');
             guessInput.classList.remove('input-error');
@@ -122,6 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function resetGame() {
             secretNumber = getRandomNumber(maxValue);
+            if (secretNumber === 67) {
+                showSixSevenAlert();
+            }
             attempts = 0;
             remaining = (LIMIT_ATTEMPTS === Infinity) ? Infinity : LIMIT_ATTEMPTS;
             isGameOver = false;

@@ -258,6 +258,60 @@ section p {
     color: var(--text);
 }
 
+.six-seven-alert {
+    position: fixed;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    z-index: 1200;
+    background: rgba(255, 255, 255, 0.95);
+    color: #111;
+    border: 4px solid #006cff;
+    border-radius: 24px;
+    padding: 1.2rem 2rem;
+    box-shadow: 0 24px 75px rgba(0, 0, 0, 0.2);
+    animation: six-seven-pulse 0.25s ease infinite alternate,
+               six-seven-shake 0.15s ease-in-out 0s 10;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 900;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 16rem;
+    pointer-events: none;
+}
+
+.six-seven-alert span {
+    display: inline-block;
+    animation: six-seven-jump 0.4s ease-in-out infinite alternate;
+}
+
+.six-seven-alert--hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+@keyframes six-seven-pulse {
+    from { transform: translateX(-50%) scale(1); }
+    to { transform: translateX(-50%) scale(1.1); }
+}
+
+@keyframes six-seven-jump {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-18px); }
+}
+
+@keyframes six-seven-shake {
+    0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    25% { transform: translateX(-50%) translateY(-3px) rotate(-2deg); }
+    50% { transform: translateX(-50%) translateY(0) rotate(2deg); }
+    75% { transform: translateX(-50%) translateY(-3px) rotate(-1deg); }
+    100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+}
+
 .clickable-card {
     cursor: pointer;
 }
