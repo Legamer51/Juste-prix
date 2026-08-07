@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Juste Prix — Mode en ligne</title>
+</head>
+<body>
+    <button type="button" class="back-button" id="back-btn" aria-label="Retour">←</button>
+    <header class="hero">
+        <div class="container">
+            <h1>Mode en ligne</h1>
+            <p class="hero-sub">Crée ou rejoins une partie avec un code à 4 chiffres.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="online">
+            <div class="contact-card">
+                <div class="tab-switcher" role="tablist" aria-label="Choisir créer ou rejoindre une partie">
+                    <button type="button" class="tab-button" data-tab="create" role="tab" aria-selected="true">Créer une partie</button>
+                    <button type="button" class="tab-button" data-tab="join" role="tab" aria-selected="false">Rejoindre une partie</button>
+                </div>
+
+                <div class="tab-content" data-tab="create">
+                    <form id="create-game-form" class="form-flex">
+                        <div>
+                            <label for="create-player-name">Ton pseudo :</label>
+                            <input type="text" id="create-player-name" name="create-player-name" required placeholder="Ex. Alex">
+                        </div>
+                        <div>
+                            <label for="create-difficulty">Difficulté :</label>
+                            <select id="create-difficulty" name="create-difficulty" required>
+                                <option value="facile">Facile</option>
+                                <option value="moyen">Moyen</option>
+                                <option value="difficile">Difficile</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Démarrer la partie</button>
+                        </div>
+                    </form>
+                    <div class="online-status" id="create-game-message">Entrez un pseudo et choisissez une difficulté.</div>
+                </div>
+
+                <div class="tab-content hidden" data-tab="join">
+                    <form id="join-game-form" class="form-flex">
+                        <div>
+                            <label for="join-player-name">Ton pseudo :</label>
+                            <input type="text" id="join-player-name" name="join-player-name" required placeholder="Ex. Sam">
+                        </div>
+                        <div>
+                            <label for="join-room-code">Code de la partie :</label>
+                            <input type="text" id="join-room-code" name="join-room-code" required placeholder="1234" maxlength="4" pattern="\d{4}">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Rejoindre</button>
+                        </div>
+                    </form>
+                    <div class="online-status" id="join-game-message">Entrez un code à 4 chiffres pour rejoindre.</div>
+                </div>
+
+                <div class="online-summary">
+                    <p id="room-info">Tu peux créer une partie pour obtenir un code. Le chef du groupe choisit la difficulté.</p>
+                    <p>Code de la dernière partie :</p>
+                    <div class="room-code" id="room-code">----</div>
+                </div>
+
+                <div class="online-room hidden" id="room-panel">
+                    <div class="online-status" id="room-state-message">En attente de joueurs...</div>
+                    <div class="room-details">
+                        <p><strong>Code :</strong> <span id="room-code-display">----</span></p>
+                        <p><strong>Hôte :</strong> <span id="room-host">-</span></p>
+                        <p><strong>Difficulté :</strong> <span id="room-difficulty">-</span></p>
+                        <p><strong>Round :</strong> <span id="room-round">1</span></p>
+                    </div>
+                    <form id="room-guess-form" class="form-flex">
+                        <div>
+                            <label for="room-guess">Ta proposition :</label>
+                            <input type="number" id="room-guess" name="room-guess" required placeholder="Entrez un nombre">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Valider</button>
+                        </div>
+                    </form>
+                    <div class="game-status" id="room-game-message">Rejoins la partie et devine en premier pour gagner.</div>
+                    <div class="game-meta">
+                        <span id="room-attempts-count">Essais : 0</span>
+                        <button type="button" id="room-reset-button" class="btn-secondary hidden">Relancer une partie</button>
+                    </div>
+                    <div class="host-controls hidden" id="host-controls">
+                        <form id="relaunch-form" class="form-flex">
+                            <div>
+                                <label for="relaunch-difficulty">Redéfinir la difficulté :</label>
+                                <select id="relaunch-difficulty" name="relaunch-difficulty">
+                                    <option value="facile">Facile</option>
+                                    <option value="moyen">Moyen</option>
+                                    <option value="difficile">Difficile</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Relancer la partie</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Juste Prix.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

@@ -29,6 +29,291 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const tabButtons = document.querySelectorAll('.tab-switcher button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const createGameForm = document.getElementById('create-game-form');
+    const joinGameForm = document.getElementById('join-game-form');
+    const createGameMessage = document.getElementById('create-game-message');
+    const joinGameMessage = document.getElementById('join-game-message');
+    const generatedRoomCode = document.getElementById('room-code');
+    const roomInfo = document.getElementById('room-info');
+    const roomPanel = document.getElementById('room-panel');
+    const roomHost = document.getElementById('room-host');
+    const roomDifficulty = document.getElementById('room-difficulty');
+    const roomRound = document.getElementById('room-round');
+    const roomCodeDisplay = document.getElementById('room-code-display');
+    const roomStateMessage = document.getElementById('room-state-message');
+    const roomGuessForm = document.getElementById('room-guess-form');
+    const roomGuessInput = document.getElementById('room-guess');
+    const roomGameMessage = document.getElementById('room-game-message');
+    const roomAttemptsCount = document.getElementById('room-attempts-count');
+    const roomResetButton = document.getElementById('room-reset-button');
+    const hostControls = document.getElementById('host-controls');
+    const relaunchForm = document.getElementById('relaunch-form');
+    const relaunchDifficulty = document.getElementById('relaunch-difficulty');
+
+    let currentPlayer = null;
+
+    function setActiveTab(tabName) {
+        tabButtons.forEach(button => {
+            const isActive = button.dataset.tab === tabName;
+            button.classList.toggle('tab-button--active', isActive);
+            button.setAttribute('aria-selected', isActive);
+        });
+
+        tabContents.forEach(content => {
+            content.classList.toggle('hidden', content.dataset.tab !== tabName);
+        });
+    }
+
+    function generateRoomCode() {
+        return String(Math.floor(1000 + Math.random() * 9000));
+    }
+
+    function getDifficultyConfig(difficulty) {
+        switch (difficulty) {
+            case 'moyen':
+                return { maxValue: 100, limitAttempts: 10 };
+            case 'difficile':
+                return { maxValue: 1000, limitAttempts: 10 };
+            default:
+                return { maxValue: 100, limitAttempts: Infinity };
+        }
+    }
+
+    function getOnlineRoom() {
+        try {
+            return JSON.parse(localStorage.getItem('aura-online-room')) || null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function saveOnlineRoom(room) {
+        localStorage.setItem('aura-online-room', JSON.stringify(room));
+    }
+
+    function showRoomMessage(element, text, status = 'info') {
+        if (!element) return;
+        element.textContent = text;
+        element.dataset.status = status;
+    }
+
+    function updateRoomSummary(room) {
+        if (generatedRoomCode) generatedRoomCode.textContent = room.code;
+        if (roomCodeDisplay) roomCodeDisplay.textContent = room.code;
+        if (roomHost) roomHost.textContent = room.host;
+        if (roomDifficulty) roomDifficulty.textContent = room.difficulty;
+        if (roomRound) roomRound.textContent = String(room.round);
+        if (roomInfo) roomInfo.textContent = `Partie active : ${room.difficulty} | Code ${room.code} | Chef : ${room.host}`;
+    }
+
+    function resetRoomInterface(room) {
+        if (!roomPanel) return;
+        roomPanel.classList.remove('hidden');
+        if (roomGuessInput) {
+            roomGuessInput.disabled = false;
+            roomGuessInput.value = '';
+        }
+        if (roomGameMessage) roomGameMessage.textContent = 'Devine le nombre. Le premier qui trouve gagne !';
+        if (roomAttemptsCount) roomAttemptsCount.textContent = `Essais : ${room.attempts}`;
+        if (roomStateMessage) roomStateMessage.textContent = `Partie en cours - ${room.difficulty}`;
+        if (roomResetButton) roomResetButton.classList.toggle('hidden', !currentPlayer || currentPlayer !== room.host);
+        if (hostControls) hostControls.classList.toggle('hidden', !currentPlayer || currentPlayer !== room.host);
+        if (relaunchDifficulty) relaunchDifficulty.value = room.difficulty;
+    }
+
+    function setRoomState(room) {
+        if (!roomPanel) return;
+        if (room.status === 'ended') {
+            if (room.winner) {
+                if (roomGameMessage) roomGameMessage.textContent = `Bravo ${room.winner} ! Le premier qui trouve a gagné.`;
+                if (roomStateMessage) roomStateMessage.textContent = `Partie terminée`;
+            } else {
+                if (roomGameMessage) roomGameMessage.textContent = `La partie est terminée. Le chef peut relancer une nouvelle partie.`;
+                if (roomStateMessage) roomStateMessage.textContent = `Partie terminée`;
+            }
+            if (roomGuessInput) roomGuessInput.disabled = true;
+        } else {
+            if (roomGameMessage) roomGameMessage.textContent = 'Devine le nombre. Le premier qui trouve gagne !';
+            if (roomStateMessage) roomStateMessage.textContent = `Partie en cours - ${room.difficulty}`;
+            if (roomGuessInput) roomGuessInput.disabled = false;
+        }
+        if (roomAttemptsCount) roomAttemptsCount.textContent = room.limitAttempts === Infinity ? `Essais : ${room.attempts}` : `Essais restants : ${Math.max(room.limitAttempts - room.attempts, 0)}`;
+    }
+
+    function createRoom(host, difficulty) {
+        const config = getDifficultyConfig(difficulty);
+        const room = {
+            code: generateRoomCode(),
+            host,
+            difficulty,
+            round: 1,
+            createdAt: Date.now(),
+            secretNumber: Math.floor(Math.random() * config.maxValue) + 1,
+            maxValue: config.maxValue,
+            limitAttempts: config.limitAttempts,
+            attempts: 0,
+            status: 'active',
+            winner: null,
+        };
+        saveOnlineRoom(room);
+        return room;
+    }
+
+    function relaunchRoom(room, newDifficulty) {
+        const config = getDifficultyConfig(newDifficulty);
+        const nextRoom = {
+            ...room,
+            difficulty: newDifficulty,
+            round: room.round + 1,
+            secretNumber: Math.floor(Math.random() * config.maxValue) + 1,
+            maxValue: config.maxValue,
+            limitAttempts: config.limitAttempts,
+            attempts: 0,
+            status: 'active',
+            winner: null,
+        };
+        saveOnlineRoom(nextRoom);
+        return nextRoom;
+    }
+
+    function renderRoom(room) {
+        updateRoomSummary(room);
+        resetRoomInterface(room);
+        setRoomState(room);
+    }
+
+    function joinRoom(playerName, room) {
+        currentPlayer = playerName;
+        if (roomPanel) roomPanel.classList.remove('hidden');
+        renderRoom(room);
+    }
+
+    if (tabButtons.length > 0) {
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                setActiveTab(button.dataset.tab);
+            });
+        });
+
+        const defaultTab = Array.from(tabButtons).find(button => button.dataset.tab === 'create') || tabButtons[0];
+        if (defaultTab) setActiveTab(defaultTab.dataset.tab);
+    }
+
+    if (createGameForm) {
+        createGameForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const playerName = document.getElementById('create-player-name').value.trim();
+            const difficulty = document.getElementById('create-difficulty').value;
+            if (!playerName) {
+                showRoomMessage(createGameMessage, 'Entrez un pseudo pour créer la partie.', 'error');
+                return;
+            }
+            const room = createRoom(playerName, difficulty);
+            currentPlayer = playerName;
+            updateRoomSummary(room);
+            showRoomMessage(createGameMessage, `Partie créée ! Code : ${room.code}`, 'success');
+            setActiveTab('join');
+            const joinCodeInput = document.getElementById('join-room-code');
+            if (joinCodeInput) joinCodeInput.value = room.code;
+            joinRoom(playerName, room);
+        });
+    }
+
+    if (joinGameForm) {
+        joinGameForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const playerName = document.getElementById('join-player-name').value.trim();
+            const joinCode = document.getElementById('join-room-code').value.trim();
+            if (!playerName) {
+                showRoomMessage(joinGameMessage, 'Entrez votre pseudo pour rejoindre la partie.', 'error');
+                return;
+            }
+            if (!/^[0-9]{4}$/.test(joinCode)) {
+                showRoomMessage(joinGameMessage, 'Le code doit contenir 4 chiffres.', 'error');
+                return;
+            }
+
+            const room = getOnlineRoom();
+            if (!room || room.code !== joinCode) {
+                showRoomMessage(joinGameMessage, 'Aucune partie trouvée avec ce code. Vérifiez et réessayez.', 'error');
+                return;
+            }
+
+            showRoomMessage(joinGameMessage, `Bienvenue ${playerName} ! Vous avez rejoint la partie ${room.code}.`, 'success');
+            joinRoom(playerName, room);
+        });
+    }
+
+    if (roomGuessForm) {
+        roomGuessForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const room = getOnlineRoom();
+            if (!room) return;
+            if (!currentPlayer) return;
+            if (room.status === 'ended') {
+                showRoomMessage(roomGameMessage, 'La partie est terminée. Le chef peut relancer une nouvelle partie.', 'info');
+                return;
+            }
+            const guessValue = Number(roomGuessInput.value);
+            if (!guessValue || guessValue < 1 || guessValue > room.maxValue) {
+                showRoomMessage(roomGameMessage, `Choisis un nombre entre 1 et ${room.maxValue}.`, 'error');
+                return;
+            }
+
+            room.attempts += 1;
+            const guessStatus = guessValue < room.secretNumber ? 'low' : (guessValue > room.secretNumber ? 'high' : 'correct');
+            if (guessStatus === 'correct') {
+                room.status = 'ended';
+                room.winner = currentPlayer;
+                showRoomMessage(roomGameMessage, `Bravo ${currentPlayer} ! Tu as trouvé le juste prix.`, 'success');
+            } else if (guessStatus === 'low') {
+                showRoomMessage(roomGameMessage, 'Trop bas ! Essaie plus haut.', 'hint');
+            } else {
+                showRoomMessage(roomGameMessage, 'Trop haut ! Essaie plus bas.', 'hint');
+            }
+
+            if (room.limitAttempts !== Infinity && room.attempts >= room.limitAttempts && room.status !== 'ended') {
+                room.status = 'ended';
+                showRoomMessage(roomGameMessage, `Plus d'essais disponibles. Le chef peut relancer la partie.`, 'error');
+            }
+
+            saveOnlineRoom(room);
+            renderRoom(room);
+            if (roomGuessInput) roomGuessInput.value = '';
+        });
+    }
+
+    if (roomResetButton) {
+        roomResetButton.addEventListener('click', () => {
+            const room = getOnlineRoom();
+            if (!room || !currentPlayer || currentPlayer !== room.host) return;
+            const newDifficulty = relaunchDifficulty ? relaunchDifficulty.value : room.difficulty;
+            const nextRoom = relaunchRoom(room, newDifficulty);
+            showRoomMessage(roomGameMessage, `Partie relancée en ${nextRoom.difficulty}.`, 'success');
+            renderRoom(nextRoom);
+        });
+    }
+
+    if (relaunchForm) {
+        relaunchForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const room = getOnlineRoom();
+            if (!room || !currentPlayer || currentPlayer !== room.host) return;
+            const newDifficulty = relaunchDifficulty.value;
+            const nextRoom = relaunchRoom(room, newDifficulty);
+            showRoomMessage(roomGameMessage, `Partie relancée en ${nextRoom.difficulty}.`, 'success');
+            renderRoom(nextRoom);
+        });
+    }
+
+    const storedRoom = getOnlineRoom();
+    if (storedRoom && generatedRoomCode) {
+        generatedRoomCode.textContent = storedRoom.code;
+        roomInfo.textContent = `Dernière partie créée par ${storedRoom.host}. Difficulté : ${storedRoom.difficulty}.`;
+    }
+
     const body = document.body;
     const toggleButton = document.getElementById('mode-toggle');
     const guessForm = document.getElementById('guess-form');
