@@ -54,6 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentPlayer = null;
 
+    function markSiteAccess() {
+        const existingToken = localStorage.getItem('aura-site-access');
+        const accessToken = existingToken || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        sessionStorage.setItem('aura-site-access', accessToken);
+        localStorage.setItem('aura-site-access', accessToken);
+    }
+
+    function hasSiteAccess() {
+        const storedToken = sessionStorage.getItem('aura-site-access');
+        const browserToken = localStorage.getItem('aura-site-access');
+        return Boolean(storedToken && browserToken && storedToken === browserToken);
+    }
+
+    markSiteAccess();
+
     function setActiveTab(tabName) {
         tabButtons.forEach(button => {
             const isActive = button.dataset.tab === tabName;
@@ -228,6 +243,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const joinCode = document.getElementById('join-room-code').value.trim();
             if (!playerName) {
                 showRoomMessage(joinGameMessage, 'Entrez votre pseudo pour rejoindre la partie.', 'error');
+                return;
+            }
+            if (!hasSiteAccess()) {
+                showRoomMessage(joinGameMessage, 'Seuls les joueurs déjà présents sur le site peuvent rejoindre avec un code.', 'error');
                 return;
             }
             if (!/^[0-9]{4}$/.test(joinCode)) {
